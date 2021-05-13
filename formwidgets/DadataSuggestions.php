@@ -1,6 +1,7 @@
 <?php namespace GromIT\DadataWidgets\FormWidgets;
 
 use Backend\Classes\FormWidgetBase;
+use GromIT\DadataWidgets\Models\Settings;
 
 /**
  * DadataSuggestions Form Widget
@@ -67,7 +68,7 @@ class DadataSuggestions extends FormWidgetBase
         };
 
 
-        $token = \Config::get('gromit.dadatawidgets::config.token', null);
+        $token = Settings::get('token');
 
         if (empty($token))
             throw new \Exception('Не заполен token для сервиса Dadata');

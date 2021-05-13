@@ -3,7 +3,6 @@
 }
 .suggestions {
     position: relative;
-    display: none;
 }
 
 .suggestions.is_open,

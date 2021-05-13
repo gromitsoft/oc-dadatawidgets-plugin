@@ -10,8 +10,6 @@
             name="<?= $name ?>"
             value='<?= $value ?>'
             @input="onChangeQuery($event.target.value)"
-            @focus="$refs.suggestions.classList.add('is_focus')"
-            @blur="$refs.suggestions.classList.remove('is_focus')"
             class="widget-search form-control"
             autocomplete="off"/>
 
@@ -20,7 +18,7 @@
              key="loader">
         </div>
 
-        <div class="suggestions" ref="suggestions">
+        <div class="suggestions">
             <div v-if="suggestions" class="suggestions__items">
                 <div v-for="(item, index) in suggestions"
                      :key="index"
@@ -115,15 +113,6 @@
                         }
                     }
                 },
-                watch: {
-                    suggestions(val) {
-                        if (val && val.length) {
-                            this.$refs.suggestions.classList.add('is_open');
-                        } else {
-                            this.$refs.suggestions.classList.remove('is_open');
-                        }
-                    },
-                }
             });
         });
     </script>
