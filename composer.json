@@ -1,0 +1,8 @@
+{
+    "name": "gromit/oc-dadatawidgets-plugin",
+    "type": "october-plugin",
+    "description": "Formwidgets working with Dadata services",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}

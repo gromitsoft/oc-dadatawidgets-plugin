@@ -1,0 +1,132 @@
+<?php if ($this->previewMode): ?>
+    <div class="form-control">
+        <?= $value ?>
+    </div>
+<?php else: ?>
+    <div id="dadata-widget-<?= $this->getId('input') ?>" class="dadata-widget">
+        <input
+            type="text"
+            id="<?= $this->getId('input') ?>"
+            name="<?= $name ?>"
+            value='<?= $value ?>'
+            @input="onChangeQuery($event.target.value)"
+            @focus="$refs.suggestions.classList.add('is_focus')"
+            @blur="$refs.suggestions.classList.remove('is_focus')"
+            class="widget-search form-control"
+            autocomplete="off"/>
+
+        <div class="loader"
+             v-if="loading"
+             key="loader">
+        </div>
+
+        <div class="suggestions" ref="suggestions">
+            <div v-if="suggestions" class="suggestions__items">
+                <div v-for="(item, index) in suggestions"
+                     :key="index"
+                     class="suggestions__item"
+                     @click="onSelectSuggestion(item)"
+                >
+                    <div>
+                        <div class="small bold">{{ item.value }}</div>
+                        <?php if ($suggestion === 'party'): ?>
+                            <div class="small">ИНН {{ item.data.inn }}, {{ item.data.address.value }}</div>
+                        <?php endif ?>
+                        <?php if ($suggestion === 'bank'): ?>
+                            <div class="small">БИК {{ item.data.bic }}, {{ item.data.address.value }}</div>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            new Vue({
+                el: '#dadata-widget-<?= $this->getId('input') ?>',
+                data: function () {
+                    return {
+                        options: {
+                            method: "POST",
+                            mode: "cors",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Accept": "application/json",
+                                "Authorization": "Token " + '<?=$dadataToken?>'
+                            },
+                            body: null,
+                        },
+                        suggestions: null,
+                        timeout: null,
+                        loading: false,
+                    };
+                },
+                methods: {
+                    setBody(val) {
+                        this.options.body = JSON.stringify({query: val});
+                    },
+                    getSuggestions(val) {
+                        let vm = this;
+                        vm.loading = true;
+                        vm.timeout = setTimeout(() => {
+                            vm.setBody(val);
+                            fetch('<?=$dadataUrl?>', vm.options)
+                                .then(response => response.text())
+                                .then((result) => {
+                                    let suggestions = JSON.parse(result).suggestions;
+                                    if (suggestions.length) {
+                                        vm.suggestions = JSON.parse(result).suggestions;
+                                    } else {
+                                        vm.suggestions = null;
+                                    }
+                                    vm.loading = false;
+                                }).catch(error => console.log("error", error));
+                        }, 1000);
+                    },
+
+                    onSelectSuggestion(item) {
+                        console.log(item);
+                        <?php if(isset($map)):?>
+                        <?php foreach ($map as $field => $dadataValue):?>
+                        if (document.querySelector('[name="<?=$field?>"]') !== undefined) {
+                            if (item.<?=$dadataValue?> !== undefined) {
+                                if (typeof item.<?=$dadataValue?> === 'object') {
+                                    document.querySelector('[name="<?=$field?>"]').value = JSON.stringify(item.<?=$dadataValue?>);
+                                } else {
+                                    document.querySelector('[name="<?=$field?>"]').value = item.<?=$dadataValue?>;
+                                }
+                            }
+                        }
+                        <?php endforeach;?>
+                        <?php endif?>
+                        this.suggestions = null;
+                    },
+                    onChangeQuery(val) {
+                        if (this.timeout) {
+                            clearTimeout(this.timeout);
+                            this.timeout = null;
+                        }
+                        if (val.length > 2) {
+                            this.getSuggestions(val);
+                        } else {
+                            this.loading = false;
+                            this.suggestions = null
+                        }
+                    }
+                },
+                watch: {
+                    suggestions(val) {
+                        if (val && val.length) {
+                            this.$refs.suggestions.classList.add('is_open');
+                        } else {
+                            this.$refs.suggestions.classList.remove('is_open');
+                        }
+                    },
+                }
+            });
+        });
+    </script>
+
+<?php endif ?>
