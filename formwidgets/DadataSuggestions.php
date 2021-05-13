@@ -57,16 +57,28 @@ class DadataSuggestions extends FormWidgetBase
             $this->vars['map'] = $mapWithModel;
         }
 
-        // TODO: use switch
-        $suggestion = match ($this->suggestion) {
-            '' => null,
-            'company' => 'party',
-            'address' => 'address',
-            'bank' => 'bank',
-            'fio' => 'fio',
-            'email' => 'email',
-        };
-
+        switch ($this->suggestion) {
+            case '':
+                $suggestion = null;
+                break;
+            case 'company':
+                $suggestion = 'party';
+                break;
+            case 'address':
+                $suggestion = 'address';
+                break;
+            case 'bank':
+                $suggestion = 'bank';
+                break;
+            case 'fio':
+                $suggestion = 'fio';
+                break;
+            case 'email':
+                $suggestion = 'email';
+                break;
+            default:
+                throw new \Exception('Unexpected value');
+        }
 
         $token = Settings::get('token');
 
