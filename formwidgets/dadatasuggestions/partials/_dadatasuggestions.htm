@@ -87,7 +87,6 @@
                     },
 
                     onSelectSuggestion(item) {
-                        console.log(item);
                         <?php if(isset($map)):?>
                         <?php foreach ($map as $field => $dadataValue):?>
                         if (document.querySelector('[name="<?=$field?>"]') !== undefined) {
