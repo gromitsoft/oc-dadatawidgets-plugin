@@ -9,6 +9,14 @@ use GromIT\DadataWidgets\Models\Settings;
 class DadataSuggestions extends FormWidgetBase
 {
 
+    const SUGGESTIONS_TYPES = [
+        'company' => 'party',
+        'address' => 'address',
+        'bank'    => 'bank',
+        'fio'     => 'fio',
+        'email'   => 'email',
+    ];
+
     public $suggestion = '';
     public $map = null;
 
@@ -57,40 +65,18 @@ class DadataSuggestions extends FormWidgetBase
             $this->vars['map'] = $mapWithModel;
         }
 
-        switch ($this->suggestion) {
-            case '':
-                $suggestion = null;
-                break;
-            case 'company':
-                $suggestion = 'party';
-                break;
-            case 'address':
-                $suggestion = 'address';
-                break;
-            case 'bank':
-                $suggestion = 'bank';
-                break;
-            case 'fio':
-                $suggestion = 'fio';
-                break;
-            case 'email':
-                $suggestion = 'email';
-                break;
-            default:
-                throw new \Exception('Unexpected value');
-        }
+        if (!in_array($this->suggestion, array_keys(self::SUGGESTIONS_TYPES)))
+            throw new \Exception('Не указан тип подсказки, возможные значения: '
+                . implode(', ', array_keys(self::SUGGESTIONS_TYPES)));
 
         $token = Settings::get('token');
 
         if (empty($token))
             throw new \Exception('Не заполен token для сервиса Dadata');
 
-        if (empty($suggestion))
-            throw new \Exception('Не указан тип подсказки suggestion');
-
-        $this->vars['suggestion'] = $suggestion;
+        $this->vars['suggestion'] = self::SUGGESTIONS_TYPES[$this->suggestion];
         $this->vars['dadataToken'] = $token;
-        $this->vars['dadataUrl'] = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/' . $suggestion;
+        $this->vars['dadataUrl'] = 'https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/' . self::SUGGESTIONS_TYPES[$this->suggestion];
 
     }
 

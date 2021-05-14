@@ -2,7 +2,16 @@
     "name": "gromit/oc-dadatawidgets-plugin",
     "type": "october-plugin",
     "description": "Formwidgets working with Dadata services",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "GromIT",
+            "email": "info@grom-it.ru"
+        }
+    ],
     "require": {
-        "composer/installers": "~1.0"
+        "php": ">=7.2",
+        "composer/installers": "~1.0",
+        "ext-json": "*"
     }
 }
