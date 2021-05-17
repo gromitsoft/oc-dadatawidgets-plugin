@@ -1,6 +1,7 @@
 <?php namespace GromIT\DadataWidgets;
 
 use GromIT\DadataWidgets\FormWidgets\DadataSuggestions;
+use GromIT\DadataWidgets\FormWidgets\DataContainer;
 use GromIT\DadataWidgets\Models\Settings;
 use System\Classes\PluginBase;
 use System\Classes\SettingsManager;
@@ -28,7 +29,8 @@ class Plugin extends PluginBase
     public function registerFormWidgets()
     {
         return [
-            DadataSuggestions::class => 'dadataSuggestions'
+            DadataSuggestions::class => 'dadataSuggestions',
+            DataContainer::class => 'dataContainer',
         ];
     }
 

@@ -19,6 +19,7 @@ class DadataSuggestions extends FormWidgetBase
 
     public $suggestion = '';
     public $map = null;
+    public $relation = true;
 
     /**
      * @inheritDoc
@@ -32,6 +33,7 @@ class DadataSuggestions extends FormWidgetBase
     {
         $this->fillFromConfig([
             'suggestion',
+            'relation',
             'map',
         ]);
     }
@@ -55,6 +57,7 @@ class DadataSuggestions extends FormWidgetBase
         $this->vars['name'] = $this->formField->getName();
         $this->vars['value'] = $this->getLoadValue();
         $this->vars['model'] = $this->model;
+        $this->vars['relation'] = $this->relation;
 
         if ($this->map) {
             $modelShortName = (new \ReflectionClass($this->model))->getShortName();

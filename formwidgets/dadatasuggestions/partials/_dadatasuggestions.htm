@@ -41,7 +41,11 @@
     </div>
 
     <script>
+
+
+        <?php if(!$relation):?>
         document.addEventListener('DOMContentLoaded', function () {
+            <?php endif?>
             new Vue({
                 el: '#dadata-widget-<?= $this->getId('input') ?>',
                 data: function () {
@@ -114,7 +118,9 @@
                     }
                 },
             });
+            <?php if(!$relation):?>
         });
+        <?php endif?>
     </script>
 
 <?php endif ?>

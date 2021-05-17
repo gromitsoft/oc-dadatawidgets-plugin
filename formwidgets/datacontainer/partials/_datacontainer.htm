@@ -1,0 +1,14 @@
+<!-- Data container -->
+<?php if ($this->previewMode): ?>
+    <div class="form-control">
+        <pre class="small"><?= is_array($field->value) ? print_r($field->value) : $field->value ?></pre>
+    </div>
+<?php else: ?>
+    <textarea
+        name="<?= $field->getName() ?>"
+        id="<?= $field->getId() ?>"
+        autocomplete="off"
+        class="form-control field-textarea size-<?= $field->size ?>"
+        placeholder="<?= e(trans($field->placeholder)) ?>"
+        <?= $field->getAttributes() ?>><?= $value ?></textarea>
+<?php endif ?>
