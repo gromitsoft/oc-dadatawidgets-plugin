@@ -155,7 +155,7 @@ fields:
     name:
         label: Имя
     patronymic:
-        label: Отчетство
+        label: Отчество
     gender:
         label: Пол
 ```

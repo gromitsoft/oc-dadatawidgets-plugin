@@ -10,11 +10,11 @@
     display: block;
 }
 .widget-search{
-    z-index: 101;
+    z-index: 16;
 }
 .suggestions__items {
     position: absolute;
-    z-index: 100;
+    z-index: 15;
     border: 1px solid rgba(149, 165, 166, 0.2);
     border-radius: 8px;
     box-shadow: 0 0 32px rgb(67 86 100 / 20%);
